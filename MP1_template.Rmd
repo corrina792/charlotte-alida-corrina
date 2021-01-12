@@ -23,13 +23,36 @@ knitr::opts_chunk$set(
 )
 library(tidyverse)
 library(sds192)
+library(openintro)
+library(mdsr)
+library(RColorBrewer)
 ```
 
 ## Section 1
 
-```{r}
-mtcars
+```{r original graph, points sized by median income}
+
+data(state_stats)
+
+state_stats_noDC <- state_stats %>%
+  filter(fed_spend < 100)
+
+a <- ggplot(data = state_stats_noDC, aes(x = fed_spend, y = poverty, color = med_income))
+
+a + geom_smooth(color = "black", fill = "darkslategray", se = FALSE) + geom_text(aes(label = abbr), size = 4, check_overlap = TRUE) + ggtitle("Federal Spending vs. Poverty Rate by US State, 2010") + labs(x = "Federal Spending per Capita (USD, in 1,000s)", y = "Poverty Rate (% of State Population)", caption = "Source: Census Quick Facts and InfoChimps (no longer available as of 2020)") + theme_dark() + scale_color_gradient(name = "Median Family Income (USD)", breaks = c(40000, 50000, 60000, 70000), labels = c("40,000", "50,000", "60,000", "70,000"), low = "white", high = "aquamarine3")
+
+a
+
 ```
+```{r same graph but sized by % of individuals collecting social security }
+
+b <- ggplot(data = state_stats_noDC, aes(x = fed_spend, y = poverty, color = med_income))
+
+b + geom_smooth(color = "gray", fill = "tomato") + geom_text(aes(label = abbr, size = soc_sec), color = "white", check_overlap = TRUE) + ggtitle("Federal Spending vs. Poverty Rate by US State, 2010") + labs(x = "Federal Spending per Capita (USD, in 1,000s)", y = "Poverty Rate (% of State Population)", caption = "Source: Census Quick Facts and InfoChimps (no longer available as of 2020)") + theme_dark()
+
+b
+```
+
 
 
 
