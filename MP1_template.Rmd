@@ -1,8 +1,8 @@
 ---
-title: "SDS 192 Assignment"
-subtitle: "SDS 192"
-author: "Your name"
-date: "`r format(Sys.Date(), '%B %e, %Y')`"
+title: "The Impact of Federal Spending on Poverty in the United States"
+subtitle: "A Snapshot"
+author: "Alida Norton, Corrina Pascale, and Charlotte Steinhardt"
+date: "January 13, 2021"
 output: 
   html_document:
     toc: true
@@ -26,16 +26,18 @@ library(sds192)
 library(openintro)
 ```
 
-## Section 1
+Does US federal spending per capita impact a state’s poverty rate? The graph below, derived from 2010 decennial census data, plots federal spending per capita per state (in thousands of dollars)against state poverty rate (the percentage of each state population below the poverty line). [^1] The Census Bureau calculates poverty thresholds based on family size and age of members; these thresholds do not vary by state. [^2] 
 
-```{r original graph, points sized by median income}
+The line of best fit shown in the plot obviously does not closely fit the data, but seems to indicate a nonlinear general relationship between poverty rate and federal spending: that poverty is lower where federal spending is lowest and highest.
 
+
+```{r}
 data(state_stats)
 
 state_stats_noDC <- state_stats %>%
   filter(fed_spend < 100) 
 
-legend_colors = c("#d01c8b", "#f1b6da", "#f7f7f7", "#b8e186", "#4dac26")
+legend_colors = c("#fef0d9", "#fdcc8a", "#fc8d59", "#e34a33", "#b30000")
 
 our_plot <- ggplot(data = state_stats_noDC, aes(x = fed_spend, y = poverty, color = soc_sec)) +
   geom_smooth(color = "black", fill = "darkslategray", se = FALSE) + 
@@ -48,12 +50,41 @@ our_plot <- ggplot(data = state_stats_noDC, aes(x = fed_spend, y = poverty, colo
   scale_colour_gradientn(name = "Social Security Recipients \n(% of State Population)", colors = legend_colors) 
 
 our_plot
-ggsave("Fed_Spending_Poverty.png")
 
 ```
 
+What accounts for the variation in federal spending across states? States with the highest per capita federal spending include Maryland and Virginia, who likely have more federal employees and therefore more incoming federal dollars, due to their proximity to Washington, DC.[^3]  
+
+Other states with high federal spending allocations, such as Alaska, Hawai’i, and New Mexico, have smaller populations but likely receive more federal funds per person because they host military bases and other government installations. Alaska also requires higher-than-average infrastructure funding and has twenty times the average state population of Indigenous persons, who are eligible for particular federal healthcare programs.[^4] Nevada, which received the lowest funding per capita, seems to have a habitual issue filing effective federal grants.[^5]
+
+The majority of federal funding to states takes the form of entitlement programs; according to Pew estimates from 2014, Social Security and Medicare made up close to 60 percent of total federal spending to states (see table below).[^6] 
+
+***
+Federal Funding Allocation          | Percentage of Funds
+----------------------------------- | -------------
+Social Security, federal pensions   | 34%
+Medicare                            | 28%
+Grants (including Medicaid)         | 18%
+Contracts (mainly defense purchases)| 11%
+Salaries and wages                  | 9%
+***
+
+The graph also shows Social Security recipients as a percentage of state population, where darker saturation corresponds to higher percentages. Social Security acts as an anti-poverty program by providing an income to non-workers; however, the graph does not reveal a discernible pattern between Social Security receipt and the poverty rate, perhaps because the data depicts conditions only within one year, rather than over an extended period of time. States in the mid-range of federal funding appear to have more elevated levels of Social Security recipients. 
+
+Overall, although we might have predicted federal spending to be inversely related to state poverty rates, this relationship is not demonstrated in our graph, possibly because of other federal funding sources besides anti-poverty programs like Social Security that account for variation in federal funding per capita across states. 
 
 
+[^1]: From the state_stats dataset in the openintro package. 
+
+[^2]: US Census Bureau. “Poverty.” The United States Census Bureau, December 15, 2020. Accessed January 11, 2021. https://www.census.gov/topics/income-poverty/poverty.html.
+
+[^3]: Washington, DC was omitted from our plot: it is an extreme outlier with an elevated level of federal spending per capita: $100,909. Twelve percent of its population received Social Security, and its poverty level was 18.5 percent.
+
+[^4]: Goldsmith, Scott and Eric Larson. “What Does $7.6 Billion in Federal Money Mean to Alaska?” UA Research Summary No. 2, Institute of Social and Economic Research,  University of Alaska Anchorage. November 2003. Accessed January 13, 2021. https://iseralaska.org/static/legacy_publication_links/FedSpendSum.pdf
+
+[^5]: “The Federal Grant Competitiveness Project: Ensuring Nevada Receives its Fair Share of Federal Grant Funding.” 2017 Legislative Session. Accessed January 13, 2021. https://www.leg.state.nv.us/App/NELIS/REL/79th2017/ExhibitDocument/OpenExhibitDocument?exhibitId=26385&fileDownloadName=0220a_dicmFedGrntProj.pdf
+
+[^6]: “Federal Spending in the States, 2005 to 2014.” March 3, 2016. Accessed January 12, 2021. https://www.pewtrusts.org/en/research-and-analysis/issue-briefs/2016/03/federal-spending-in-the-states-2005-to-2014
 
 
 
@@ -67,7 +98,9 @@ text_stats()
 
 In this assignment, we attempted the following [standards](https://beanumber.github.io/sds192/standards.html):
 
-- `r standard_button("markdown")`: We met the Markdown standard because we...
-- `r standard_button("aesthetics")`: We met the Aesthetics standard because we...
+- `r standard_button("markdown")` We met the Markdown standard because we included a range of web elements, including data graphics, code chunks, and links (within the endnotes), as well as a table and endnote formatting. 
+- `r standard_button("aesthetics")` We met the Aesthetics standard by customizing our plot, choosing sans-serif fonts and resizing for easy readability, selecting a dark background to stand out against the white background of the final overall document, and using a sequential color palette to represent our third variable (Social Security participation). We used two geoms: geom_text and geom_line, eliminating the margin of error band in geom_line to avoid including any elements that were more confusing than illustrative.
+
+
 
 
